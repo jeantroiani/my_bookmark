@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Contact do
 	
 	context "Demonstration of how datamapper works" do
@@ -7,8 +9,9 @@ describe Contact do
 		Contact.create(:name   => "Jean",
 									 :email  => "jean@troiani.com",
 								   :country=> "Venezuela")
+		
 		expect(Contact.count).to eq(1)
-
+		
 		contact= Contact.first
 
 		expect(contact.name).to eq("Jean")
