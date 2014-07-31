@@ -4,14 +4,29 @@ require 'spec_helper'
 		before(:each) {
 			Contact.create(:name		=>"Jean",
 										 :email		=>"jean@troiani.com",
-										 :country =>"Venezuela"
+										 :country =>"Venezuela",
+										 :tags		=>[Tag.first_or_create(:text=>"family")])
 
-				)
-		}
+			Contact.create(:name		=>"Maria",
+										 :email		=>"maria@romero.com",
+										 :country =>"UK",
+										:tags		=>[Tag.first_or_create(:text=>"friend")])
+											
+			Contact.create(:name		=>"Dan",
+										 :email		=>"dan@smith.com",
+										 :country =>"UK",
+										 :tags		=>[Tag.first_or_create(:text=>"work")])
+										
+									}
 
 			scenario 'When opening the home page' do
 				visit '/'
 				expect(page).to have_content('Venezuela')
+			end
+			scenario 'filtered by a tag' do
+					visit '/tags/friend'
+					expect(page).not_to have_content('Dan')
+					expect(page).to have_content('Maria')
 			end
 	end
 	
@@ -47,9 +62,6 @@ require 'spec_helper'
 				expect(contact.tags.map(&:text)).to include('family')
 				expect(contact.tags.map(&:text)).to include('friends')
 			end
-
-
-
 
 
 	end

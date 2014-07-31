@@ -3,7 +3,7 @@ require 'sinatra/base'
 
 	env = ENV["RACK_ENV"] || "development"
 
-	DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
+	DataMapper.setup(:default, "postgres://localhost/contact_manager_#{env}")
 	require './lib/contacts.rb'
 	require './lib/tags.rb'
 	DataMapper.finalize
@@ -28,9 +28,12 @@ class Contacts < Sinatra::Base
 						 Tag.first_or_create(:text => tag)
 						 end
 		Contact.create(:name => name,:email => email,:country => country,:tags => tags)
-
 	end
 
-
-
+	get '/tags/:text' do
+		tag= Tag.first(:text=> params[:text])
+		@contacts = tag ? tag.contacts : []
+		erb :index
+ 	end
 end
+
